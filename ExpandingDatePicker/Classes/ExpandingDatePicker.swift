@@ -5,7 +5,8 @@ import AppKit
 
 open class ExpandingDatePicker: NSDatePicker {
     var panel: ExpandingDatePickerPanel?
-
+    var dismissOnSelection = false
+    
     var isRefocusingToSourceDatePicker = false
 
     override open func becomeFirstResponder() -> Bool {
