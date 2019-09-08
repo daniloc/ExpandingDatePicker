@@ -141,8 +141,9 @@ open class ExpandingDatePicker: NSDatePicker {
             displayPanel()
         }
 
-        let controller = panel!.contentViewController as! ExpandingDatePickerPanelController
-        controller.datePickerTextual.mouseDown(with: convertEvent(event: event, toPanel: panel!))
+        if let controller = panel?.contentViewController as? ExpandingDatePickerPanelController {
+            controller.datePickerTextual.mouseDown(with: convertEvent(event: event, toPanel: panel!))
+        }
     }
 
     func dismissExpandingPanel(refocusDatePicker: Bool = false) {
