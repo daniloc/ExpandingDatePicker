@@ -20,6 +20,8 @@ class ExpandingDatePickerPanelController: NSViewController, CALayerDelegate {
     let sourceDatePicker: ExpandingDatePicker
     let datePickerTextual: InternalDatePicker
     let datePickerGraphical: NSDatePicker
+    
+    var selectionHandler: (()->Void)?
 
     init(sourceDatePicker: ExpandingDatePicker) {
         self.sourceDatePicker = sourceDatePicker
@@ -122,12 +124,17 @@ class ExpandingDatePickerPanelController: NSViewController, CALayerDelegate {
 
     @objc
     func dateChanged(_ sender: NSDatePicker) {
+        
+        if let handler = selectionHandler {
+            handler()
+        }
+        
         guard let target = sourceDatePicker.target,
             let action = sourceDatePicker.action else {
                 return
         }
 
         let _ = target.perform(action, with: sourceDatePicker)
+        
     }
 }
-
