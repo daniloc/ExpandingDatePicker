@@ -4,11 +4,13 @@
 import AppKit
 
 open class ExpandingDatePicker: NSDatePicker {
-    var panel: ExpandingDatePickerPanel?
-    var dismissOnSelection = false
-    
-    var isRefocusingToSourceDatePicker = false
 
+    open var shouldDismissOnSelecton = false
+
+    
+    var panel: ExpandingDatePickerPanel?
+    var isRefocusingToSourceDatePicker = false
+    
     override open func becomeFirstResponder() -> Bool {
         if isRefocusingToSourceDatePicker {
             return super.becomeFirstResponder()
@@ -63,6 +65,14 @@ open class ExpandingDatePicker: NSDatePicker {
         panel.isMovableByWindowBackground = false
         panel.contentViewController = controller
         panel.sourceDatePicker = self
+        
+        if shouldDismissOnSelecton {
+            controller.selectionHandler = {
+                if self.panel != nil {
+                    self.dismissExpandingPanel()
+                }
+            }
+        }
 
         // Unfortunatley, when this panel gets shown as a child window via
         // -[NSWindow addChildWindow:ordered:] and made key, the traffic lights in
@@ -87,8 +97,9 @@ open class ExpandingDatePicker: NSDatePicker {
         self.panel = panel
 
         alphaValue = 0.0
+        
     }
-
+    
     private func convertEvent(event: NSEvent, toPanel: NSPanel) -> NSEvent {
         let eventWindow = event.window!
 
@@ -164,4 +175,3 @@ open class ExpandingDatePicker: NSDatePicker {
         }
     }
 }
-
